@@ -1,0 +1,15 @@
+{
+  "name": "@zrain/ui",
+  "version": "1.0.0",
+  "description": "Shared Zrain brand header, footer and design tokens for independent websites",
+  "type": "module",
+  "private": true,
+  "exports": {
+    ".": "./src/zrain-ui.js",
+    "./styles": "./src/brand.css"
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {"node": ">=20"}
+}
