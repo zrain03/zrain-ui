@@ -15,7 +15,7 @@ One shared visual identity for independent Zrain websites.
 - Each app configures its own name, product URL and optionally its menu/footer links.
 - Each app's auth, APIs, database and main functionality stay fully independent.
 
-**Release model:** Each product keeps a versioned local copy of `src/brand.css` and `src/zrain-ui.js`. Avoid a runtime request to a single shared server that could break every product. The included `sync.ps1` safely copies only those two files to a target project when you deliberately update its version.
+**Release model:** Zrain UI is now a real **GitHub-pinned npm dependency**, installed from `zrain03/zrain-ui` at a specific commit. Each product has a small build-time sync step that copies the exact `src/brand.css`, `src/zrain-ui.js` and official `assets/zrain-logo.webp` from `node_modules/@zrain/ui` to its public folder. The code is version-pinned and stays local when served, so websites do not depend on another server at runtime. CI and pre-test checks fail if published assets drift from the pinned source.
 
 ## Current implementations
 
@@ -25,11 +25,11 @@ One shared visual identity for independent Zrain websites.
 
 ## Integrate into a new website
 
-1. Copy `src/brand.css` and `src/zrain-ui.js` to your website's public folder.
-2. Copy the **official** `zrain-logo.webp` from `zrain-links/cloudflare/public/zrain-logo.webp` to that folder. The official logo is not recreated by this package.
-3. Include the shared stylesheet **after** your product CSS, then include your small product config module.
-4. Provide `.zrain-header .zrain-brand` and `.zrain-footer .zrain-footer__identity` containers in your HTML. If supplying menu/footer links from config, provide `.main-nav` and `.zrain-footer__links` too.
-5. Run `npm test` and manually check mobile/desktop layout. Deploy each app independently.
+1. Add `"@zrain/ui": "github:zrain03/zrain-ui#af77e6782bdfa168296c1fe14061d72a1e400c55"` under `dependencies` in the website's `package.json`.
+2. Run `npm install`. The exact pinned GitHub commit will be installed locally under `node_modules/@zrain/ui`. Commit `package-lock.json` for reproducibility.
+3. Copy a **sync script**, such as `cloudflare/scripts/sync-zrain-ui.mjs` from Zrain Links, to the new app's scripts directory. Configure `"zrainUi": {"publicDir": "public"}` in `package.json` and add an `ui:sync` command. Run `npm run ui:sync` to install the official `brand.css`, `zrain-ui.js` and logo into the hosting folder. Run `npm run ui:check` to verify parity.
+4. Include the shared stylesheet **after** the product CSS and load a small product-specific `zrain-ui-config.js`. Add `.zrain-header .zrain-brand` and `.zrain-footer .zrain-footer__identity` containers. Product navigation and authentication remain independent.
+5. Test and deploy each product independently. When upgrading the shared design, deliberately update the pinned Git commit, run install and sync, review changes, test, commit and deploy. **Pushing this repo alone does not automatically redeploy dependent websites.**
 
 Example:
 
@@ -66,7 +66,23 @@ mountZrainUI({
 
 Existing Links/Auth Starter deliberately **omit** the navigation property to preserve their dynamic auth/admin navigation and existing playground behavior.
 
-## Synchronize code to a project (PowerShell)
+## Git dependency integration and releases
+
+Both Zrain Links and Auth Starter now declare the same pinned GitHub package reference. Links uses `cloudflare/package.json` and copies into `cloudflare/public`; Auth Starter has an optional root `package.json` and copies into `docs`. Their UI sync scripts are identical. This does not add Node.js as a requirement for the Auth Starter Java server; Node.js is only used for its optional public website.
+
+Each consumer runs:
+
+```powershell
+npm install
+npm run ui:sync
+npm run ui:check
+```
+
+Zrain Links additionally has `deploy-zrain-links.ps1` to run install, sync, tests, Worker deployment and Firebase Hosting deployment in that order. Auth Starter's static website still needs changed `docs/` assets committed and pushed to its own repository so GitHub Pages can publish them.
+
+A new Zrain UI release should be reviewed before changing a consumer's GitHub dependency SHA. CI checks catch stale copies, while the package commit SHA prevents unreviewed breaking updates.
+
+## Synchronize code to a project (PowerShell, legacy manual option)
 
 From the extracted `zrain-ui` directory:
 
