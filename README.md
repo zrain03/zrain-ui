@@ -2,7 +2,9 @@
 
 One shared visual identity for independent Zrain websites.
 
-**Tagline:** One ecosystem. A variety of useful tools.
+**Official tagline:** Made for people. Built with purpose.
+
+**Supporting line:** Explore the Zrain Ecosystem.
 
 **Main website:** https://zrain.web.app
 
