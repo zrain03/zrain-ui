@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {mountZrainUI,ZRAIN_HOME,ZRAIN_TAGLINE} from '../src/zrain-ui.js';
+test('official Zrain tagline stays exact',()=>{assert.equal(ZRAIN_TAGLINE,'Made for people. Built with purpose.')});
 function node(tag){return {tag,children:[],attributes:{},setAttribute(k,v){this.attributes[k]=v},append(...n){this.children.push(...n)},replaceChildren(...n){this.children=n}}}
 test('main brand navigation and footer stay consistent',()=>{
  const header=node('div'),footer=node('div'),nav=node('nav'); nav.append(node('a'));
