@@ -9,6 +9,7 @@ test('main brand navigation and footer stay consistent',()=>{
  const result=mountZrainUI({product:'Monitor',logoSrc:'/zrain-logo.webp',productHref:'/monitor',document:doc});
  assert.equal(header.children[0].href,ZRAIN_HOME);
  assert.equal(header.children[0].children[1].textContent,'Zrain');
+ assert.equal(header.children[0].children[2].textContent,ZRAIN_TAGLINE);
  assert.equal(header.children[1].textContent,'Monitor');
  assert.equal(header.children[1].href,'/monitor');
  assert.equal(footer.children[0].href,ZRAIN_HOME);
