@@ -10,7 +10,7 @@ One shared visual identity for independent Zrain websites.
 
 ## What it does
 
-- The official Zrain logo and the word **Zrain** in the header open the main ecosystem website.
+- The official Zrain logo, name and tagline **Made for people. Built with purpose.** in the header open the main ecosystem website.
 - The product label (e.g., **Links**, **Auth Starter**, **Monitor**) links to the product's own homepage.
 - The footer logo and **Developed by Zrain** credit open the main ecosystem website.
 - Consistent Inter typography, warm background, terracotta accent, padding and footer layout.
