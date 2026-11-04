@@ -447,6 +447,13 @@ body {
   .zrain-header .topnav,
   .zrain-header .main-nav { gap: 12px; }
 }
+/* BM: Smooth native anchor scroll hanya bagi halaman yang memilih scrollSpy, bukan semua produk.
+   EN: Native smooth anchor scrolling is opt-in for scrollSpy, not imposed on every product. */
+html.zrain-scrollspy--smooth { scroll-behavior: smooth; }
+/* BM: Pastikan sasaran anchor tidak tersembunyi di bawah header sticky.
+   EN: Keep an anchor target clear of the sticky header. */
+.zrain-scrollspy-target { scroll-margin-top: var(--zrain-scrollspy-offset, 72px); }
+
 /* BM: Gunakan susun atur mobile untuk lebar 700px ke bawah.
    EN: Apply the mobile layout at widths of 700px and below. */
 @media (max-width: 700px) {
@@ -601,6 +608,13 @@ body {
      EN: Set text color to maintain brand hierarchy and contrast. */
   color: var(--zrain-brand-accent);
 }
+/* BM: Smooth native anchor scroll hanya bagi halaman yang memilih scrollSpy, bukan semua produk.
+   EN: Native smooth anchor scrolling is opt-in for scrollSpy, not imposed on every product. */
+html.zrain-scrollspy--smooth { scroll-behavior: smooth; }
+/* BM: Pastikan sasaran anchor tidak tersembunyi di bawah header sticky.
+   EN: Keep an anchor target clear of the sticky header. */
+.zrain-scrollspy-target { scroll-margin-top: var(--zrain-scrollspy-offset, 72px); }
+
 /* BM: Gunakan susun atur mobile untuk lebar 700px ke bawah.
    EN: Apply the mobile layout at widths of 700px and below. */
 @media (max-width: 700px) {
@@ -635,21 +649,21 @@ body {
   /* BM: Agihkan elemen sepanjang paksi utama komponen.
      EN: Distribute elements along the main axis of the component. */
   justify-content: center;
-  /* BM: Pastikan kawasan interaktif mempunyai ketinggian minimum.
-     EN: Maintain a minimum height for the interactive area. */
-  min-height: 38px;
-  /* BM: Sediakan ruang dalaman yang cukup supaya elemen tidak bersesak.
-     EN: Provide inner spacing so component contents do not feel cramped. */
-  padding: 8px 11px;
-  /* BM: Gunakan sempadan halus untuk membezakan elemen interaktif.
-     EN: Use a subtle border to distinguish interactive elements. */
-  border: 1px solid transparent;
-  /* BM: Bulatkan sudut mengikut bahasa visual Zrain.
-     EN: Round corners according to Zrain’s visual language. */
-  border-radius: 8px;
-  /* BM: Tetapkan jarak menegak tulisan untuk kebolehbacaan.
-     EN: Set text line spacing for readability. */
-  line-height: 1.25;
+  /* BM: Jangan paksa ketinggian 38px; pautan Discover asal bersaiz padat mengikut teks dan padding.
+     EN: Do not force a 38px height; the original Discover link sizes compactly from text and padding. */
+  min-height: 0;
+  /* BM: Selaraskan ruang pautan dengan 8px/10px pada Discover dalam Zrain Ecosystem.
+     EN: Match the 8px/10px link padding of Discover in Zrain Ecosystem. */
+  padding: 8px 10px;
+  /* BM: Jangan tambah border 1px; Discover asal menggunakan penanda bawah inset, bukan border kotak.
+     EN: Do not add a 1px border; the original Discover uses an inset bottom indicator, not a box border. */
+  border: 0;
+  /* BM: Gunakan radius tepat 9px daripada active Discover asal.
+     EN: Use the exact 9px radius from the original active Discover state. */
+  border-radius: 9px;
+  /* BM: Ikuti ketinggian baris semula jadi agar tab tidak menjadi pil tinggi.
+     EN: Follow the natural line height so tabs do not turn into tall pills. */
+  line-height: normal;
   /* BM: Tetapkan hiasan teks sesuai dengan peranan pautan.
      EN: Set text decoration appropriate to the link role. */
   text-decoration: none;
@@ -666,20 +680,33 @@ body {
      EN: Set a background compatible with Zrain’s soft visual identity. */
   background: rgba(189, 83, 56, .07);
 }
-.zrain-header .topnav a:is(.current, .active, [aria-current="page"]),
-.zrain-header .main-nav a:is(.current, .active, [aria-current="page"]) {
-  /* BM: Tetapkan warna latar yang menyokong identiti lembut Zrain.
-     EN: Set a background compatible with Zrain’s soft visual identity. */
-  background: #fff0e9;
-  /* BM: Tetapkan warna teks supaya hierarchy dan kontras jenama konsisten.
-     EN: Set text color to maintain brand hierarchy and contrast. */
-  color: #a93d26;
-  /* BM: Tetapkan sifat gaya yang diperlukan oleh komponen ini.
-     EN: Set the styling property required by this component. */
-  border-color: #fae7dd;
-  /* BM: Tambah bayang yang membantu pengguna mengenal pasti tab aktif.
-     EN: Add a shadow to help users identify the active tab. */
-  box-shadow: inset 0 -2px 0 #c35c40, 0 2px 5px rgba(143, 66, 44, .08);
+/* BM: Golden Reference: ambil secara tepat gaya Discover Zrain Ecosystem, bukan reka bentuk pill baharu.
+   EN: Golden Reference: reproduce the exact Zrain Ecosystem Discover style, not a new pill design.
+   BM: class current/active dan kedua-dua aria-current=page/location dilayan sama untuk menu milik produk.
+   EN: Treat current/active and both aria-current=page/location equally for product-owned menus. */
+.zrain-header .topnav a:is(.current, .active, [aria-current="page"], [aria-current="location"]),
+.zrain-header .main-nav a:is(.current, .active, [aria-current="page"], [aria-current="location"]) {
+  /* BM: Warna teks terracotta tepat daripada Discover, bukan warna active terdahulu.
+     EN: Use Discover's exact terracotta text color rather than the previous active color. */
+  color: #a64930;
+  /* BM: Tebalkan teks aktif kepada berat 850 seperti Discover yang diluluskan.
+     EN: Set active text weight to 850, matching the approved Discover style. */
+  font-weight: 850;
+  /* BM: Gunakan warna latar peach yang sama seperti Discover dalam Ecosystem.
+     EN: Use the same peach background as Discover in the Ecosystem. */
+  background: #fff1e9;
+  /* BM: Kekalkan penjuru padat 9px, bukan kotak besar seperti Quickstart lama.
+     EN: Keep the compact 9px corners rather than the old oversized Quickstart box. */
+  border-radius: 9px;
+  /* BM: Gunakan padding 8px menegak, 10px mendatar daripada rujukan sebenar.
+     EN: Use the exact 8px vertical, 10px horizontal padding from the source reference. */
+  padding: 8px 10px;
+  /* BM: Tunjukkan jalur terracotta 2px di bawah sebagai petunjuk halaman semasa.
+     EN: Show the 2px terracotta inset underline to indicate the current page. */
+  box-shadow: inset 0 -2px 0 #b95136;
+  /* BM: Ikuti peralihan active selama .22s yang digunakan oleh Ecosystem untuk perubahan seksyen.
+     EN: Match the Ecosystem's .22s active transition when the selected section changes. */
+  transition: background .22s ease, color .22s ease, box-shadow .22s ease;
 }
 .zrain-header .topnav a:focus-visible,
 .zrain-header .main-nav a:focus-visible,
@@ -697,6 +724,13 @@ body {
      EN: Smooth hover and focus changes without excessive animation. */
   transition: color .18s ease;
 }
+
+/* BM: Smooth native anchor scroll hanya bagi halaman yang memilih scrollSpy, bukan semua produk.
+   EN: Native smooth anchor scrolling is opt-in for scrollSpy, not imposed on every product. */
+html.zrain-scrollspy--smooth { scroll-behavior: smooth; }
+/* BM: Pastikan sasaran anchor tidak tersembunyi di bawah header sticky.
+   EN: Keep an anchor target clear of the sticky header. */
+.zrain-scrollspy-target { scroll-margin-top: var(--zrain-scrollspy-offset, 72px); }
 
 /* BM: Gunakan susun atur mobile untuk lebar 700px ke bawah.
    EN: Apply the mobile layout at widths of 700px and below. */
@@ -760,6 +794,9 @@ body {
 /* BM: Hormati pilihan pengguna yang meminta pergerakan dikurangkan.
    EN: Respect the user’s reduced-motion preference. */
 @media (prefers-reduced-motion: reduce) {
+  /* BM: Jangan animasikan scroll apabila pengguna memilih reduced motion.
+     EN: Do not animate scrolling when the user prefers reduced motion. */
+  html.zrain-scrollspy--smooth { scroll-behavior: auto; }
   .zrain-header .topnav a,
   .zrain-header .main-nav a,
   .zrain-footer .zrain-footer__home,

@@ -54,6 +54,31 @@ zrain-ui/
 
 **EN:** The approved Golden Reference is the Zrain Ecosystem header and footer. The active indicator is a soft terracotta highlight, not merely a text color change. Visible keyboard focus and scrollable managed mobile navigation are also part of the standard. Managed-mobile CSS should not be imposed blindly on another product's hamburger menu.
 
+**BM:** Penanda `Discover` yang diluluskan menggunakan teks `#a64930`, berat `850`, latar `#fff1e9`, radius `9px`, padding `8px 10px` dan jalur bawah `inset 0 -2px 0 #b95136`. `current`, `active`, `aria-current="page"` dan `aria-current="location"` disokong. Saiz tab tidak dipaksa kepada 38px. Ini menyalin gaya aktif sebenar daripada `public/ecosystem-unified.css` dalam ZIP Ecosystem rujukan, tanpa menyalin layout atau fungsi produk lain.
+
+**EN:** The approved `Discover` indicator uses text `#a64930`, weight `850`, background `#fff1e9`, radius `9px`, padding `8px 10px` and bottom inset `0 -2px 0 #b95136`. `current`, `active`, `aria-current="page"` and `aria-current="location"` are supported. Tabs are not forced to 38px height. This reproduces the actual active style from the reference Ecosystem ZIP's `public/ecosystem-unified.css` without copying other product layouts or behavior.
+
+### ScrollSpy pilihan / Optional scrollSpy
+
+**BM:** Tambahkan `scrollSpy: true` bersama `navigation` jika laman mempunyai pautan seksyen pada halaman yang sama, contohnya `#discover`, `#contact`, `#community`. ID seksyen mesti benar-benar wujud. Klik menukar highlight terus kepada destinasi, sementara browser melakukan smooth native anchor scrolling. Scroll manual mengemas kini highlight berdasarkan seksyen pada garis bacaan viewport. Hanya satu tab aktif pada satu masa. Pengesanan scroll dihadkan kepada satu bacaan setiap animation frame, tanpa timer. Pautan luaran, aplikasi tanpa navigation terurus, dan aplikasi yang tidak memilih `scrollSpy` tidak berubah. Gunakan `scrollSpy` hanya selepas memastikan tiada scroll-spy milik aplikasi yang berkonflik. `prefers-reduced-motion` dihormati.
+
+**EN:** Add `scrollSpy: true` beside `navigation` for same-page section links such as `#discover`, `#contact`, `#community`. The target IDs must exist. Clicking immediately selects the destination while the browser performs smooth native anchor scrolling. Manual scrolling updates the active item from the section at the viewport reading line. Only one tab is active. Scroll calculations run at most once per animation frame, without timers. External links, product-owned menus, and applications without `scrollSpy` retain their original behavior. Opt in only after checking for conflicting app-owned scroll-spy logic. The user's `prefers-reduced-motion` setting is respected.
+
+```javascript
+// BM: Hanya halaman yang mempunyai seksyen sebenar memilih scrollSpy.
+// EN: Only pages with actual sections opt into scrollSpy.
+mountZrainUI({
+  product: 'Ecosystem',
+  logoSrc: '/zrain-logo.webp',
+  navigation: [
+    { label: 'Discover', href: '#discover', current: true },
+    { label: 'Contact', href: '#contact' },
+    { label: 'Community', href: '#community' }
+  ],
+  scrollSpy: true
+});
+```
+
 ## 3. Public API / API awam
 
 **BM:** `src/zrain-ui.js` mengeksport `mountZrainUI(config)`, `ZRAIN_HOME` dan `ZRAIN_TAGLINE`. `mountZrainUI` memerlukan `product` dan `logoSrc` (string tidak kosong). Ia menerima `productHref`, `homeHref`, `tagline`, `navigation`, `footerLinks` dan `document` sebagai pilihan. Panggilan mengembalikan `product`, `homeHref`, `productHref`, `tagline` dan `refreshNavigation`.

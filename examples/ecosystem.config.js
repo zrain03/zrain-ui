@@ -41,6 +41,9 @@ mountZrainUI({
     // EN: Set the label and destination for this menu or footer item.
     { label: "Categories", href: "#categories" }
   ],
+  // BM: Aktifkan highlight tanpa delay untuk klik dan peralihan seksyen melalui scroll.
+  // EN: Enable instant click highlight and automatic section tracking while scrolling.
+  scrollSpy: true,
   // BM: Bekalkan pautan footer tanpa menyentuh authentication.
   // EN: Supply footer links without touching authentication.
   footerLinks: [

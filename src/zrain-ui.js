@@ -138,6 +138,147 @@ function selectedNavigationIndex(items, doc) {
 }
 
 /**
+ * BM: Pantau seksyen yang benar-benar kelihatan apabila aplikasi memilih `scrollSpy: true`.
+ * EN: Track the section actually in view when an app opts into `scrollSpy: true`.
+ * BM: Hanya pautan hash pada halaman yang sama dan ID seksyen sedia ada digunakan;
+ *     pautan luaran serta menu produk yang tidak diurus tidak disentuh.
+ * EN: Only same-page hash links with existing section IDs are used;
+ *     external links and application-owned menus remain untouched.
+ * @returns {{schedule: function, cleanup: function}|null} Pengawal dan pembersihan / Controller and cleanup.
+ */
+function observeSections(doc, nav, links, navigation, setActive) {
+  // BM: Perlukan window serta akses kepada seksyen; DOM ujian ringkas boleh terus menggunakan mod route.
+  // EN: Require a window and section lookup; basic test DOMs may keep route-based selection.
+  const win = doc.defaultView;
+  if (!win?.addEventListener || !doc.getElementById) return null;
+  const page = new URL(win.location.href);
+  const entries = navigation.flatMap((item, index) => {
+    // BM: Jangan perhatikan menu luaran atau pautan halaman berlainan.
+    // EN: Never observe external menus or links to another page.
+    if (item.external) return [];
+    let url;
+    try { url = new URL(item.href, doc.baseURI || page.href); } catch { return []; }
+    if (url.origin !== page.origin || url.pathname !== page.pathname ||
+        url.search !== page.search || !url.hash) return [];
+    // BM: ID mesti benar-benar wujud; pautan hash yang tidak sepadan bukan seksyen aktif.
+    // EN: IDs must actually exist; unmatched hashes are not observable sections.
+    let id;
+    try { id = decodeURIComponent(url.hash.slice(1)); } catch { return []; }
+    const section = doc.getElementById(id);
+    return section?.getBoundingClientRect ? [{index, link: links[index], section, hash: url.hash}] : [];
+  });
+  if (!entries.length) return null;
+
+  // BM: Kesan smooth scrolling hanya apabila scrollSpy diaktifkan; hormati reduced motion melalui CSS.
+  // EN: Enable smooth scrolling only for opted-in scrollSpy; CSS respects reduced motion.
+  const root = doc.documentElement;
+  const hadSmooth = root?.classList?.contains('zrain-scrollspy--smooth');
+  root?.classList?.add('zrain-scrollspy--smooth');
+  const header = doc.querySelector('.zrain-header');
+  const attached = entries.filter(entry => !entry.section.classList?.contains('zrain-scrollspy-target'));
+  for (const entry of attached) entry.section.classList?.add('zrain-scrollspy-target');
+  // BM: Simpan nilai offset lama supaya remount tidak meninggalkan perubahan style.
+  // EN: Preserve any previous offset so remounting leaves no stray inline style.
+  const oldOffset = root?.style?.getPropertyValue?.('--zrain-scrollspy-offset') || '';
+  let pending = -1;
+  let frame = null;
+  let live = true;
+
+  // BM: Sejajarkan anchor dengan header sticky yang sebenar; tiada nombor magic untuk tingginya.
+  // EN: Align anchors with the measured sticky header instead of assuming its height.
+  const headerOffset = () => Math.round(header?.getBoundingClientRect?.().height || 0) + 12;
+  const setOffset = () => root?.style?.setProperty?.('--zrain-scrollspy-offset', `${headerOffset()}px`);
+
+  // BM: Kira seksyen pada garis bacaan viewport seperti prinsip Zrain Ecosystem.
+  // EN: Resolve the section at the viewport reading line, following the Ecosystem principle.
+  const update = () => {
+    if (!live) return;
+    setOffset();
+    const offset = headerOffset();
+    const readingLine = Math.max(offset + 12, (win.innerHeight || 0) * .42);
+    const atBottom = Number.isFinite(win.scrollY) && Number.isFinite(root?.scrollHeight) &&
+      root.scrollHeight > win.innerHeight + 2 && win.scrollY + win.innerHeight >= root.scrollHeight - 2;
+    // BM: Klik menandakan destinasi serta-merta; jangan biarkan animasi scroll menyorot tab perantaraan.
+    // EN: Clicking selects the destination instantly; intermediate smooth-scroll frames must not flash other tabs.
+    if (pending !== -1) {
+      const target = entries.find(entry => entry.index === pending)?.section;
+      if ((target && Math.abs(target.getBoundingClientRect().top - offset) <= 12) ||
+          (atBottom && entries[entries.length - 1].index === pending)) pending = -1;
+      else { setActive(pending, 'location'); return; }
+    }
+    let selected = navigation.findIndex(item => item.current === true);
+    if (selected === -1) selected = entries[0].index;
+    let nearest = -Infinity;
+    for (const entry of entries) {
+      const top = entry.section.getBoundingClientRect().top;
+      if (top <= readingLine && top > nearest) {
+        nearest = top;
+        selected = entry.index;
+      }
+    }
+    // BM: Seksyen terakhir masih aktif ketika footer dicapai walaupun ia terlalu pendek.
+    // EN: Keep the last section active near the footer even when that section is short.
+    if (atBottom) selected = entries[entries.length - 1].index;
+    setActive(selected, 'location');
+  };
+
+  // BM: Hadkan pengiraan scroll kepada satu kali setiap frame; tiada timer atau delay buatan.
+  // EN: Batch scroll measurements to one per frame without artificial timers or delays.
+  const schedule = () => {
+    if (frame !== null) return;
+    if (!win.requestAnimationFrame) { update(); return; }
+    frame = win.requestAnimationFrame(() => { frame = null; update(); });
+  };
+  // BM: Scroll manual membatalkan kunci klik supaya lokasi sebenar terus diutamakan.
+  // EN: Manual scrolling cancels a clicked destination so the actual location takes precedence.
+  const interrupt = () => { pending = -1; };
+  const interruptKeys = event => {
+    if (['ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End', ' '].includes(event.key) &&
+        !event.target?.closest?.('input, textarea, select, [contenteditable]')) interrupt();
+  };
+  const clicks = entries.map(entry => {
+    const handler = event => {
+      if (event.defaultPrevented || event.button > 0 || event.ctrlKey || event.metaKey ||
+          event.altKey || event.shiftKey) return;
+      pending = entry.index;
+      // BM: Papar active indicator serta-merta sebelum browser memulakan anchor scroll semula jadi.
+      // EN: Set the indicator immediately before the browser starts its native anchor scrolling.
+      setActive(entry.index, 'location');
+    };
+    entry.link.addEventListener?.('click', handler);
+    return {link: entry.link, handler};
+  });
+  for (const event of ['scroll', 'resize', 'load']) win.addEventListener(event, schedule, {passive: true});
+  for (const event of ['wheel', 'touchstart', 'pointerdown']) win.addEventListener(event, interrupt, {passive: true});
+  win.addEventListener('keydown', interruptKeys);
+
+  return {
+    schedule,
+    // BM: Navigasi browser yang berubah di tengah animasi membatalkan sasaran klik lama.
+    // EN: A browser route change during smooth movement cancels a stale clicked destination.
+    routeChanged() {
+      if (pending === -1) return;
+      const targetHash = entries.find(entry => entry.index === pending)?.hash;
+      if (new URL(win.location.href).hash !== targetHash) pending = -1;
+    },
+    cleanup() {
+      // BM: Hentikan frame dan semua pendengar ketika mount diulang.
+      // EN: Stop outstanding frames and every listener when the component is remounted.
+      live = false;
+      if (frame !== null) win.cancelAnimationFrame?.(frame);
+      for (const event of ['scroll', 'resize', 'load']) win.removeEventListener(event, schedule);
+      for (const event of ['wheel', 'touchstart', 'pointerdown']) win.removeEventListener(event, interrupt);
+      win.removeEventListener('keydown', interruptKeys);
+      for (const {link, handler} of clicks) link.removeEventListener?.('click', handler);
+      for (const entry of attached) entry.section.classList?.remove('zrain-scrollspy-target');
+      if (!hadSmooth) root?.classList?.remove('zrain-scrollspy--smooth');
+      if (oldOffset) root?.style?.setProperty?.('--zrain-scrollspy-offset', oldOffset);
+      else root?.style?.removeProperty?.('--zrain-scrollspy-offset');
+    }
+  };
+}
+
+/**
  * BM: Kontrak API awam mountZrainUI; semua parameter kekal serasi dengan versi asal.
  * EN: Public mountZrainUI API contract; all parameters remain backwards compatible.
  * BM: Objek konfigurasi aplikasi; tidak diwajibkan mengurus menu produk.
@@ -154,6 +295,9 @@ function selectedNavigationIndex(items, doc) {
  * @param {string} [config.tagline] - Footer tagline only.
  * BM: Senarai menu terurus pilihan; abaikan untuk mengekalkan menu sedia ada.
  * @param {{label:string,href:string,current?:boolean,external?:boolean}[]} [config.navigation]
+ * BM: Pilihan khas untuk highlight yang mengikuti seksyen semasa melalui klik dan scroll.
+ * EN: Optional click-and-scroll section tracking for managed same-page navigation.
+ * @param {boolean} [config.scrollSpy] - Defaults to false; requires navigation and matching section IDs.
  *   Optional: omit to retain a product's existing, state-driven menu and auth controls.
  *   `current` is the landing-page fallback; URL path, query and hash take precedence.
  * BM: Senarai pautan footer pilihan.
@@ -303,28 +447,28 @@ export function mountZrainUI(config) {
       // BM: Gantikan hanya item menu apabila aplikasi memilih menu terurus.
       // EN: Replace only menu items when the app opts into managed navigation.
       nav.replaceChildren(...items);
-      // BM: Berikan kaedah refresh kepada aplikasi SPA yang mengubah route tanpa event browser.
-      // EN: Expose a refresh method for SPAs that change routes without browser events.
-      refreshNavigation = () => {
-        // BM: Dapatkan indeks aktif berdasarkan URL terkini, bukan state klik lama.
-        // EN: Calculate the active index from the latest URL, not stale click state.
-        const selected = selectedNavigationIndex(config.navigation, doc);
-        // BM: Segerakkan setiap item menu supaya hanya satu mempunyai status aktif.
-        // EN: Synchronize every menu item so only one can be active.
+      // BM: Kongsi kemas kini aktif bagi URL dan pengesanan seksyen agar hanya satu item aktif.
+      // EN: Share one active-state renderer between route handling and section tracking.
+      const setActive = (selected, locationType = 'page') => {
         items.forEach((a, i) => {
-          // BM: Toggle kelas current untuk visual highlight pada browser sebenar.
-          // EN: Toggle the current class for visual highlighting in real browsers.
-          a.classList?.toggle("current", i === selected);
-          // BM: Sokong objek DOM ujian yang tiada classList.
-          // EN: Support simple test doubles that do not implement classList.
-          if (!a.classList) a.className = i === selected ? "current" : "";
-          // BM: Tetapkan aria-current untuk membantu pengguna pembaca skrin mengenal pasti lokasi mereka.
-          // EN: Set aria-current so screen-reader users know their current location.
-          if (i === selected) a.setAttribute("aria-current", "page");
-          // BM: Buang aria-current daripada item yang tidak lagi aktif.
-          // EN: Remove aria-current from items that are no longer active.
-          else a.removeAttribute?.("aria-current");
+          // BM: Sesuaikan highlight serta aria-current untuk pembaca skrin, tanpa state yang lapuk.
+          // EN: Update highlight and accessible current location without stale state.
+          a.classList?.toggle('current', i === selected);
+          if (!a.classList) a.className = i === selected ? 'current' : '';
+          if (i === selected) a.setAttribute('aria-current', locationType);
+          else a.removeAttribute?.('aria-current');
         });
+      };
+      // BM: scrollSpy ialah pilihan; menu tanpa pilihan ini kekal berasaskan route seperti dahulu.
+      // EN: scrollSpy is opt-in; ordinary managed menus retain their original route behavior.
+      const tracking = config.scrollSpy === true ?
+        observeSections(doc, nav, items, config.navigation, setActive) : null;
+      // BM: Muat semula route terus, kemudian selaraskan viewport jika pengesanan seksyen tersedia.
+      // EN: Refresh the URL-derived route immediately, then reconcile the viewport when section tracking exists.
+      refreshNavigation = () => {
+        tracking?.routeChanged();
+        setActive(selectedNavigationIndex(config.navigation, doc), tracking ? 'location' : 'page');
+        tracking?.schedule();
       };
       // BM: Kemaskan status menu sebaik sahaja komponen dipasang.
       // EN: Synchronize the menu immediately after mounting.
@@ -350,6 +494,9 @@ export function mountZrainUI(config) {
             // EN: Remove old callbacks when the menu is remounted.
             win.removeEventListener(event, refreshNavigation);
           }
+          // BM: Bersihkan juga scrollSpy, class dan style yang dipasang secara pilihan.
+          // EN: Also clean up optional scrollSpy listeners, classes, and styles.
+          tracking?.cleanup();
         });
       }
     }
