@@ -1,0 +1,11 @@
+# Pembangun / Developer: Zrain
+# Dicipta / Created: 2026-11-04
+# Dikemas kini / Last updated: 2026-11-04
+# Fail / File: .gitignore
+# BM: Elakkan dependency, hasil ujian sementara dan fail editor daripada termasuk dalam source Git.
+# EN: Keep dependencies, transient test outputs and editor artifacts out of source control.
+node_modules/
+coverage/
+.DS_Store
+Thumbs.db
+*.log

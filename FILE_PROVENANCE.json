@@ -1,0 +1,190 @@
+{
+  "schemaVersion": 1,
+  "developer": "Zrain",
+  "created": "2026-11-04",
+  "updated": "2026-11-04",
+  "descriptionMs": "Metadata semua fail termasuk JSON dan WebP; tarikh asal bersandarkan bukti Git, bukan anggaran kelahiran fail.",
+  "descriptionEn": "Metadata for every file including JSON and WebP; original dates are based on Git evidence, not guessed file birth times.",
+  "files": [
+    {
+      "path": ".gitignore",
+      "developer": "Zrain",
+      "created": "2026-11-04",
+      "createdBasis": "created in current documentation package",
+      "updated": "2026-11-04",
+      "purposeMs": "Abaikan fail hasil build dan sementara.",
+      "purposeEn": "Ignore build and temporary outputs.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "FILE_PROVENANCE.json",
+      "developer": "Zrain",
+      "created": "2026-11-04",
+      "createdBasis": "created in current documentation package",
+      "updated": "2026-11-04",
+      "purposeMs": "Rekod metadata semua fail sumber termasuk fail ini.",
+      "purposeEn": "Provenance for every source file including this registry.",
+      "metadataLocation": "registry self-record (strict JSON)"
+    },
+    {
+      "path": "README.md",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Panduan projek dan integrasi dwibahasa.",
+      "purposeEn": "Bilingual project and integration guide.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "assets/README.txt",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Penerangan asal-usul aset rasmi.",
+      "purposeEn": "Explanation of official asset provenance.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "assets/zrain-logo.webp",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Imej logo rasmi Zrain yang tidak diubah.",
+      "purposeEn": "Unmodified official Zrain logo asset.",
+      "metadataLocation": "registry (binary file, no source comments)"
+    },
+    {
+      "path": "docs/ENGINEERING_STANDARD.md",
+      "developer": "Zrain",
+      "created": "2026-11-04",
+      "createdBasis": "created in current documentation package",
+      "updated": "2026-11-04",
+      "purposeMs": "Rujukan standard struktur dan komen.",
+      "purposeEn": "Reference for structure and commenting rules.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "examples/auth-starter.config.js",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Konfigurasi demo produk berasingan.",
+      "purposeEn": "Individual product demo configuration.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "examples/ecosystem.config.js",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Konfigurasi demo produk berasingan.",
+      "purposeEn": "Individual product demo configuration.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "examples/ecosystem.html",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Halaman HTML demo header/footer.",
+      "purposeEn": "Header/footer HTML demonstration page.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "examples/links.config.js",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Konfigurasi demo produk berasingan.",
+      "purposeEn": "Individual product demo configuration.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "examples/monitor.config.js",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Konfigurasi demo produk berasingan.",
+      "purposeEn": "Individual product demo configuration.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "examples/monitor.html",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Halaman HTML demo header/footer.",
+      "purposeEn": "Header/footer HTML demonstration page.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "package.json",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Manifest pakej Node dan eksport awam.",
+      "purposeEn": "Node package manifest and public exports.",
+      "metadataLocation": "registry + native package metadata"
+    },
+    {
+      "path": "scripts/sync.ps1",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Sync manual fail UI ke produk pengguna.",
+      "purposeEn": "Manual UI file sync to consuming products.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "src/brand.css",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Stail bersama untuk visual jenama.",
+      "purposeEn": "Shared styling for the brand identity.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "src/zrain-ui.js",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "API public untuk UI Zrain.",
+      "purposeEn": "Public API for the Zrain UI.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "test/provenance.test.js",
+      "developer": "Zrain",
+      "created": "2026-11-04",
+      "createdBasis": "created in current documentation package",
+      "updated": "2026-11-04",
+      "purposeMs": "Ujian automatik yang mewajibkan metadata pada setiap fail.",
+      "purposeEn": "Automated checks requiring provenance metadata for every source file.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "test/ui.test.js",
+      "developer": "Zrain",
+      "created": "2026-10-27",
+      "createdBasis": "earliest tracked Git addition",
+      "updated": "2026-11-04",
+      "purposeMs": "Ujian regresi integrasi UI.",
+      "purposeEn": "UI integration regression tests.",
+      "metadataLocation": "file header + registry"
+    }
+  ]
+}

@@ -1,17 +1,73 @@
 <!doctype html>
+<!--
+  Pembangun / Developer: Zrain
+  Dicipta / Created (rekod Git terawal): 2026-10-27
+  Dikemas kini / Last updated: 2026-11-04
+  Fail / File: examples/monitor.html
+  BM: Halaman contoh untuk menyemak header, footer, menu dan kandungan produk secara berasingan.
+  EN: Demonstration page to inspect the header, footer, navigation, and independent product content.
+-->
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Zrain Monitor</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../src/brand.css">
-<script type="module" src="./monitor.config.js"></script>
-<style>body{margin:0;background:#fffaf6;color:#121e2a}main{width:min(900px,calc(100% - 48px));margin:80px auto;min-height:48vh}h1{font-size:clamp(32px,5vw,58px)}</style>
+  <!-- BM: Tetapkan encoding Unicode dan viewport supaya teks dan layout mobile dipaparkan betul.
+       EN: Declare Unicode encoding and viewport for correct text and mobile layout. -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Zrain Monitor</title>
+
+  <!-- BM: Gunakan font Inter untuk mengikuti rupa Zrain; fallback CSS tersedia jika font gagal.
+       EN: Load Inter for the Zrain style; CSS fallbacks remain available if it fails. -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- BM: CSS berkongsi visual rasmi header, footer dan active navigation.
+       EN: Shared CSS owns the official header, footer and active navigation appearance. -->
+  <link rel="stylesheet" href="../src/brand.css">
+
+  <!-- BM: Konfigurasi memilih nama produk dan menu; business logic tidak diubah.
+       EN: Configuration selects product identity and navigation without altering business logic. -->
+  <script type="module" src="./monitor.config.js"></script>
+
+  <!-- BM: Gaya demo ini hanya melibatkan body dan kandungan contoh, bukan library bersama.
+       EN: These demo-only styles affect the page body and sample content, not the shared library. -->
+  <style>
+    /* BM: Tentukan latar neutral bagi memeriksa kontras header/footer.
+       EN: Use a neutral background to inspect header/footer contrast. */
+    body { margin: 0; background: #fffaf6; color: #121e2a; }
+    /* BM: Hadkan lebar dan beri ruang minimum kepada kandungan demo.
+       EN: Constrain demo content width and provide a minimum visible area. */
+    main { width: min(900px, calc(100% - 48px)); margin: 80px auto; min-height: 48vh; }
+    /* BM: Skala tajuk responsif supaya sesuai pada desktop dan telefon.
+       EN: Scale the heading responsively for desktop and phones. */
+    h1 { font-size: clamp(32px, 5vw, 58px); }
+  </style>
 </head>
 <body>
-<header class="zrain-header"><div class="zrain-header__inner">
-  <div class="zrain-brand"></div><nav class="main-nav" aria-label="Primary navigation"></nav>
-</div></header>
-<main id="top"><p>ZRAIN UI DEMO</p><h1>Zrain Monitor</h1><p id="overview">A future product can reuse the shared chrome while keeping its own functionality.</p></main>
-<footer class="zrain-footer"><div class="zrain-footer__inner"><div class="zrain-footer__identity"></div><div class="zrain-footer__links"></div></div></footer>
-</body></html>
+  <!-- BM: Bekas jenama diisi oleh mountZrainUI; menu kekal milik konfigurasi contoh.
+       EN: mountZrainUI fills the brand slot; the example configuration owns the menu. -->
+  <header class="zrain-header">
+    <div class="zrain-header__inner">
+      <div class="zrain-brand"></div>
+      <nav class="main-nav" aria-label="Primary navigation"></nav>
+    </div>
+  </header>
+
+  <!-- BM: Kandungan produk sengaja bebas daripada komponen jenama bersama.
+       EN: Product content deliberately remains independent of the shared branding components. -->
+  <main id="top">
+    <p>ZRAIN UI DEMO</p>
+    <h1>Zrain Monitor</h1>
+    <!-- BM: Seksyen overview menunjukkan contoh kandungan yang kekal dimiliki produk.
+         EN: The overview section illustrates content that remains product-owned. -->
+    <p id="overview">A future product can reuse the shared chrome while keeping its own functionality.</p>
+  </main>
+
+  <!-- BM: Identiti footer dan pautan dikawal melalui slot yang khusus.
+       EN: Footer identity and links are controlled through dedicated slots. -->
+  <footer class="zrain-footer">
+    <div class="zrain-footer__inner">
+      <div class="zrain-footer__identity"></div>
+      <div class="zrain-footer__links"></div>
+    </div>
+  </footer>
+</body>
+</html>
