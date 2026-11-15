@@ -17,26 +17,6 @@
       "metadataLocation": "file header + registry"
     },
     {
-      "path": "FILE_PROVENANCE.json",
-      "developer": "Zrain",
-      "created": "2026-11-04",
-      "createdBasis": "created in current documentation package",
-      "updated": "2026-11-04",
-      "purposeMs": "Rekod metadata semua fail sumber termasuk fail ini.",
-      "purposeEn": "Provenance for every source file including this registry.",
-      "metadataLocation": "registry self-record (strict JSON)"
-    },
-    {
-      "path": "README.md",
-      "developer": "Zrain",
-      "created": "2026-10-27",
-      "createdBasis": "earliest tracked Git addition",
-      "updated": "2026-11-04",
-      "purposeMs": "Panduan projek dan integrasi dwibahasa.",
-      "purposeEn": "Bilingual project and integration guide.",
-      "metadataLocation": "file header + registry"
-    },
-    {
       "path": "assets/README.txt",
       "developer": "Zrain",
       "created": "2026-10-27",
@@ -97,6 +77,16 @@
       "metadataLocation": "file header + registry"
     },
     {
+      "path": "examples/index.html",
+      "developer": "Zrain",
+      "created": "2026-11-15",
+      "createdBasis": "approved preview",
+      "updated": "2026-11-15",
+      "purposeMs": "Contoh paparan UI yang diluluskan.",
+      "purposeEn": "Approved UI showcase.",
+      "metadataLocation": "file header + registry"
+    },
+    {
       "path": "examples/links.config.js",
       "developer": "Zrain",
       "created": "2026-10-27",
@@ -127,6 +117,26 @@
       "metadataLocation": "file header + registry"
     },
     {
+      "path": "FILE_PROVENANCE.json",
+      "developer": "Zrain",
+      "created": "2026-11-04",
+      "createdBasis": "created in current documentation package",
+      "updated": "2026-11-04",
+      "purposeMs": "Rekod metadata semua fail sumber termasuk fail ini.",
+      "purposeEn": "Provenance for every source file including this registry.",
+      "metadataLocation": "registry self-record (strict JSON)"
+    },
+    {
+      "path": "index.html",
+      "developer": "Zrain",
+      "created": "2026-11-15",
+      "createdBasis": "V4.5.14 shared release",
+      "updated": "2026-11-15",
+      "purposeMs": "Paparan dan komponen bersama Zrain UI.",
+      "purposeEn": "Shared Zrain UI components and showcase.",
+      "metadataLocation": "file header + registry"
+    },
+    {
       "path": "package.json",
       "developer": "Zrain",
       "created": "2026-10-27",
@@ -137,13 +147,53 @@
       "metadataLocation": "registry + native package metadata"
     },
     {
-      "path": "scripts/sync.ps1",
+      "path": "README.md",
       "developer": "Zrain",
       "created": "2026-10-27",
       "createdBasis": "earliest tracked Git addition",
       "updated": "2026-11-04",
-      "purposeMs": "Sync manual fail UI ke produk pengguna.",
-      "purposeEn": "Manual UI file sync to consuming products.",
+      "purposeMs": "Panduan projek dan integrasi dwibahasa.",
+      "purposeEn": "Bilingual project and integration guide.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "shared/integration.css",
+      "developer": "Zrain",
+      "created": "2026-11-15",
+      "createdBasis": "V4.5.14 shared release",
+      "updated": "2026-11-15",
+      "purposeMs": "Paparan dan komponen bersama Zrain UI.",
+      "purposeEn": "Shared Zrain UI components and showcase.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "shared/layout.js",
+      "developer": "Zrain",
+      "created": "2026-11-15",
+      "createdBasis": "V4.5.14 shared release",
+      "updated": "2026-11-15",
+      "purposeMs": "Paparan dan komponen bersama Zrain UI.",
+      "purposeEn": "Shared Zrain UI components and showcase.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "shared/reference.css",
+      "developer": "Zrain",
+      "created": "2026-11-15",
+      "createdBasis": "V4.5.14 shared release",
+      "updated": "2026-11-15",
+      "purposeMs": "Paparan dan komponen bersama Zrain UI.",
+      "purposeEn": "Shared Zrain UI components and showcase.",
+      "metadataLocation": "file header + registry"
+    },
+    {
+      "path": "shared/runtime.mjs",
+      "developer": "Zrain",
+      "created": "2026-11-15",
+      "createdBasis": "V4.5.14 shared release",
+      "updated": "2026-11-15",
+      "purposeMs": "Paparan dan komponen bersama Zrain UI.",
+      "purposeEn": "Shared Zrain UI components and showcase.",
       "metadataLocation": "file header + registry"
     },
     {
@@ -151,7 +201,7 @@
       "developer": "Zrain",
       "created": "2026-10-27",
       "createdBasis": "earliest tracked Git addition",
-      "updated": "2026-11-04",
+      "updated": "2026-11-15",
       "purposeMs": "Stail bersama untuk visual jenama.",
       "purposeEn": "Shared styling for the brand identity.",
       "metadataLocation": "file header + registry"
@@ -161,7 +211,7 @@
       "developer": "Zrain",
       "created": "2026-10-27",
       "createdBasis": "earliest tracked Git addition",
-      "updated": "2026-11-04",
+      "updated": "2026-11-15",
       "purposeMs": "API public untuk UI Zrain.",
       "purposeEn": "Public API for the Zrain UI.",
       "metadataLocation": "file header + registry"

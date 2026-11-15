@@ -44,7 +44,7 @@
 <body>
   <!-- BM: Bekas jenama diisi oleh mountZrainUI; menu kekal milik konfigurasi contoh.
        EN: mountZrainUI fills the brand slot; the example configuration owns the menu. -->
-  <header class="zrain-header">
+  <header data-zrain-legacy class="zrain-header">
     <div class="zrain-header__inner">
       <div class="zrain-brand"></div>
       <nav class="main-nav" aria-label="Primary navigation"></nav>
@@ -53,7 +53,7 @@
 
   <!-- BM: Kandungan produk sengaja bebas daripada komponen jenama bersama.
        EN: Product content deliberately remains independent of the shared branding components. -->
-  <main id="top">
+  <main data-zrain-content id="top">
     <p>ZRAIN UI DEMO</p>
     <h1>Zrain Monitor</h1>
     <!-- BM: Seksyen overview menunjukkan contoh kandungan yang kekal dimiliki produk.
@@ -63,11 +63,12 @@
 
   <!-- BM: Identiti footer dan pautan dikawal melalui slot yang khusus.
        EN: Footer identity and links are controlled through dedicated slots. -->
-  <footer class="zrain-footer">
+  <footer data-zrain-legacy class="zrain-footer">
     <div class="zrain-footer__inner">
       <div class="zrain-footer__identity"></div>
       <div class="zrain-footer__links"></div>
     </div>
   </footer>
+<script defer src="https://zrain.web.app/ui/v2/layout.js" data-product="zrain-monitor" data-menu='[{"label":"Ecosystem","href":"https://zrain.web.app/"},{"label":"Overview","href":"#top"},{"label":"Community","href":"https://zrain-community.web.app/product.html?product=zrain-monitor"}]'></script>
 </body>
 </html>

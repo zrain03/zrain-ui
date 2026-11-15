@@ -6,7 +6,8 @@
   "private": true,
   "exports": {
     ".": "./src/zrain-ui.js",
-    "./styles": "./src/brand.css"
+    "./styles": "./src/brand.css",
+    "./compact": "./src/zrain-ui.js"
   },
   "scripts": {
     "test": "node --test"
