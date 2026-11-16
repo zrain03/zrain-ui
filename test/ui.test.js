@@ -493,3 +493,17 @@ test('shared experience ignores legacy Malay preferences and requests', () => {
   assert.equal(callbackLanguage,'en');
   assert.equal(dispatchedLanguage,'en');
 });
+
+// BM: Pastikan data lalai English kekal dan kamus BM tidak digunakan.
+// EN: Preserve default English labels without retaining the Malay dictionary.
+test('default shared views retain English labels without Malay dictionaries',()=>{
+ const source=readFileSync(new URL('../shared/runtime.mjs',import.meta.url),'utf8');
+ const start=source.indexOf('const defaultViews = ['),end=source.indexOf('const localize=',start);
+ assert.ok(start>=0 && end>start);
+ const block=source.slice(start,end);
+ assert.doesNotMatch(block,/\b(?:bm|labelBM):/);
+ const views=new Function(block+';return {defaultViews,feedbackView}')();
+ assert.equal(views.defaultViews[0].eyebrow.en,'01 / WHAT ZRAIN UI DOES');
+ assert.equal(views.defaultViews[1].primary.en,'View setup');
+ assert.equal(views.feedbackView.headline[0].en,'Your voice.');
+});
