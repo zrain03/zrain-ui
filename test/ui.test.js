@@ -470,3 +470,26 @@ test('scrollSpy CSS respects user motion preference and keeps Discover styling u
   assert.match(css,/background:\s*#fff1e9;/);
   assert.match(css,/box-shadow:\s*inset 0 -2px 0 #b95136;/);
 });
+
+// BM: Kekalkan English walaupun pilihan lama atau API meminta BM.
+// EN: Keep English despite legacy preferences or API requests.
+test('shared experience ignores legacy Malay preferences and requests', () => {
+  const source = readFileSync(new URL('../shared/runtime.mjs', import.meta.url), 'utf8');
+  const initial = source.match(/let language=[^;]+;/)?.[0];
+  const setter = source.match(/function setLanguage\(value\)\{[\s\S]*?\n  \}(?=\r?\n  function setTheme)/)?.[0];
+  assert.ok(initial && setter, 'language initialization and setter are available');
+  let callbackLanguage, storedValue, dispatchedLanguage;
+  const actions = {querySelector(){return null}};
+  const communityButton = {querySelector(){return {textContent:''}}};
+  const soundButton = {querySelector(){return {textContent:''}}, setAttribute(){}};
+  const doc = {body:{dataset:{sound:'off'}},dispatchEvent(event){dispatchedLanguage=event.detail.lang}};
+  const win = {CustomEvent: class {constructor(type,options){this.detail=options.detail}}};
+  const make = new Function('safeRead','safeWrite','actions','communityButton','soundButton','doc','win','options', initial + "\nlet theme='night'; const t=(en,bm)=>language==='bm'?bm:en;\n" + setter + '\nreturn {setLanguage,getLanguage:()=>language};');
+  const api = make(()=> 'bm', (key,value)=>{storedValue=value}, actions,communityButton,soundButton,doc,win,{onLanguageChange(value){callbackLanguage=value}});
+  assert.equal(api.getLanguage(),'en', 'stored preference must not change initial language');
+  api.setLanguage('bm');
+  assert.equal(api.getLanguage(),'en');
+  assert.equal(storedValue,'en');
+  assert.equal(callbackLanguage,'en');
+  assert.equal(dispatchedLanguage,'en');
+});
