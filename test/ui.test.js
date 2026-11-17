@@ -507,3 +507,13 @@ test('default shared views retain English labels without Malay dictionaries',()=
  assert.equal(views.defaultViews[1].primary.en,'View setup');
  assert.equal(views.feedbackView.headline[0].en,'Your voice.');
 });
+
+// English labels remain stable when legacy callers supply a second argument.
+test('game translation compatibility returns English',()=>{
+ const source=readFileSync(new URL('../shared/runtime.mjs',import.meta.url),'utf8');
+ const declaration=source.match(/const tr=\(en\)=>en;/)?.[0];
+ assert.ok(declaration);
+ const translate=new Function(declaration+';return tr')();
+ assert.equal(translate('Buttons: ','Butang: '),'Buttons: ');
+ assert.equal(translate('On','Hidup'),'On');
+});
